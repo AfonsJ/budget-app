@@ -1,0 +1,14 @@
+{
+    "empty": "#a9a9a9",
+    "eatingOut": "#ffb6c1",
+    "rent": "#ff5733",
+    "medical": "#aaff00",
+    "grocery": "#228b22",
+    "utilities": "#ffa500",
+    "transportation": "#87cefa",
+    "clothes": "#8a2be2",
+    "personalSpending": "#f4a460",
+    "entertainment": "#000080",
+    "investments": "#32cd32",
+    "misc": "#800000"
+}

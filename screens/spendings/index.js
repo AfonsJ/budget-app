@@ -1,88 +1,109 @@
 import * as React from 'react';
-import { TouchableOpacity, View, Text, Pressable, StyleSheet, TextInput, FlatList } from 'react-native';
-import AppLoading from 'expo-app'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {View, Text, Pressable, StyleSheet,FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import {TransactionModal} from './components/TransactionModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {TransactionModal } from './components/TransactionModal';
-import {CreateTransaction} from './components/CreateTransaciton';
+import { AnimatedFAB, Menu, Modal } from 'react-native-paper';
+import {TransDataTable} from './components/TransDataTable';
+
+import { useSelector,useDispatch } from 'react-redux';
+import { addTransaction, removeTransaction } from '../../redux/transactionSlice';
 
 export const Spendings = () => {
-    const [loading, setLoading] = React.useState(true);
-
     const [modalVisible, setModalVisable] = React.useState(false);
+    const [menuVisible, setMenuVisable] = React.useState(false);
+    const [menuAnchor, setMenuAnchor] = React.useState({x:0,y:0});
+    const [menuKey, setMenuKey] = React.useState(0);
 
-    let transactions;
-    
-    const [transAmount, setTransAmount] = React.useState();
-    const [transCat, setTransCat] = React.useState('');
-    const [transDate, setTransDate] = React.useState();
-    const [transTitle, setTransTitle] = React.useState("Transaction");
+    const transactions = useSelector(state=>state.transactions.trans);
+    const dispatch = useDispatch();
 
-    //todo add custom categories;
-    const categories = {
-        eatingOut: 'Eating Out',
-        rent: 'Rent',
-        medication: 'Medication',
-        grocery: 'Grocery'
-    }
-
+    //Function for closing modal
     const closeTransactionModal = () => {
         setModalVisable(false);
     }
-
-    const transactionToBeSaved = {
-        'title': transTitle,
-        'amount': transAmount,
-        'category': transCat,
-        'date': transDate
-    };
-
-    const getTransactionData = async () => {
-        let values;
-        try {
-            values = await AsyncStorage.getItem('@transactions');
-            return values != null ? JSON.parse(values) : null;
-        }catch(e){
-            console.log("error fetching data;");
-        }
-        
-        setLoading(false);
+    
+    //Functions for menu
+    const openMenu = () => {
+        setMenuVisable(true);
     }
 
-    const setTransactionData = async (transactionToBeSaved) => {
-        transactions = transactions.push(transactionToBeSaved);
-        try{    
-            await AsyncStorage.setItem('@transactions', JSON.stringify(transactions));
-        }catch(e){
-            console.log('error saving transaction');
-        }
+    const closeMenu = () => {
+        setMenuVisable(false);
     }
 
-    React.useEffect(getTransactionData);
-
-    if(loading){
-        return (
-            <View styles={{
-                flex: 1,
-                backgroundColor: '#fff',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Text>Loading Data</Text>
-            </View>
-        );
+    //Anchors the menu popup relative to where the user presses
+    //Credit for idea Gist : c7c257f8e214bc52ff530463aa2e16dc 
+    const setAnchor = (evt,key)=> {
+        const anchor = {
+            x: evt.pageX,
+            y: evt.pageY
+        }   
+        setMenuKey(key);
+        setMenuAnchor(anchor);
+        openMenu();
     }
 
-    return (    
-        <View>
-            <TransactionModal modalVisible={modalVisible} closeModal={closeTransactionModal} />
-                <FlatList
+    return (
+        <View style={styles.container}>
+            <Menu
+            visible={menuVisible}
+            anchor={menuAnchor}
+            onDismiss={closeMenu}
+            >
+                <Menu.Item title="Delete" onPress={()=>{
+                    closeMenu();
+                    dispatch(removeTransaction(menuKey));
+                    }}/>
+            </Menu>
 
-                >
-                </FlatList>
-                <Pressable onPress={()=>{setModalVisable(true)}}>  
-                    <Text>Add Trans.</Text>
-                </Pressable>
+            <TransDataTable setAnchor={setAnchor}/>
+
+            <Modal onDismiss={closeTransactionModal} visible={modalVisible} contentContainerStyle={styles.modalView}>
+                <TransactionModal closeModal={closeTransactionModal}/>
+            </Modal>
+
+            <AnimatedFAB 
+                icon={'plus'} 
+                label={'Add'} 
+                onPress={() => {setModalVisable(true)}} 
+                animateFrom={'right'} 
+                iconMode={'static'} 
+                style={styles.fabStyle} />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        position: 'relative',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalView:{
+        flex: 1,
+        padding: 60,
+        backgroundColor: 'Cyan',
+        alignSelf: 'center'
+    },
+    dataTable: {
+        top: 0,
+        position:'absolute',
+        justifyContent:'center'
+    },
+    title : {
+        fontWeight: 'bold',
+        fontSize: 10
+    },
+    smallText: {
+        fontWeight: 'normal',
+        fontSize: 5
+    },
+    fabStyle: {
+        bottom: 10,
+        right: 10,
+        position: 'absolute'
+    }
+});
