@@ -6,12 +6,9 @@ import { loadState, saveState } from './storage';
 const getPreloadedState = async () => {
   try {
       const result = await loadState();
-      
-      console.log('previous state found');
       return result;
   } catch (error) {
-    console.log(error);
-    console.log('no prev state found');
+    console.log("error looking for previous state",error);
     return undefined;
   }
 }

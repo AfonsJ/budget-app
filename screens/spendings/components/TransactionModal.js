@@ -53,7 +53,7 @@ export const TransactionModal = (props) => {
     return (
         <Card>
             <Text style={{alignSelf:'center'}} variant='headlineMedium'>Enter Details</Text>
-            <TextInput label="Title" onChangeText={(input) => setTransTitle(input)}></TextInput>
+            <TextInput value={transTitle} label="Title" onChangeText={(input) => setTransTitle(input)}></TextInput>
             <DropDownPicker 
                 style={{width: screenWidth,borderRadius:0,backgroundColor: theme.colors.surface}} 
                 labelStyle={{color: (open)?theme.colors.primary :theme.colors.onBackground}}
@@ -66,7 +66,7 @@ export const TransactionModal = (props) => {
                 setValue={setValue}
                 setItems={setItems}
             />
-            <TextInput keyboardType='numeric' label='Dollar Amount' onChangeText={(input) => setTransAmount(input)}/>
+            <TextInput value={transAmount} keyboardType='numeric' label='Dollar Amount' onChangeText={(input) => setTransAmount(input)}/>
             <Button onPress={() => {addTrans(); props.closeModal()}}>Add</Button>
         </Card>
     );

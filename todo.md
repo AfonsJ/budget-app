@@ -3,21 +3,17 @@
 Scrub Amount data for invalid (only nums) [TODO]
 
 ### Savings
-Create list of goals similar to transaction [TODO]
 Display Limits and Progress [TODO]
-
 
 ### Home
 Center and Make Donut chart More Vibrant/Pretty [TODO]
 Display current budget status (spent under/over) [TODO]
 
 ## Settings
-Look into what default settings most apps come with (do later) [TODo]
+Look into what default settings most apps come with (do later) [Todo]
 
 ## Other
 Remove unused package,clean up any functions names, params [TODO]
-Upload to Github [TODO]
-
 
 
 
@@ -39,3 +35,4 @@ Add remove balance data [DONE]
 Add a clear all data button aswell [DONE]
 
 Save savings to storage [DONE]
+Create list of goals similar to transaction [Done]
