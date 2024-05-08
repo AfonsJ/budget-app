@@ -13,14 +13,13 @@ export const GoalList = ({setAnchor}) => {
                     data={goals}
                     renderItem={(item)=>{
                             return(
-                                <Pressable
-                                    onLongPress={(e) => {
+                                <Pressable style={{flex:1, padding:10, marginTop:10, borderColor: 'black', borderStyle: 'solid', borderRadius: 10, borderWidth: 2}}
+                                    onLongPress={(e) => {   
                                         setAnchor(e.nativeEvent, item.item.key);
                                     }}
                                     >
-                                    <Text>{item.item.title}</Text>
-                                    <Divider/>
-                                    <Text>{item.item.goalBal}</Text>
+                                    <Text style={styles.goalText}>{item.item.title}</Text>
+                                    <Text style={{alignSelf:'center'}}>{'$' + item.item.goalBal}</Text>
                                 </Pressable>
                             )
                         }
@@ -36,5 +35,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 6
+    },
+    goalText:{
+        fontSize: 20,
+        alignSelf: 'center',
+        marginBottom: 10
     }
 });

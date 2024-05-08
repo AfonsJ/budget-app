@@ -22,8 +22,8 @@ export const GoalModal = (props) => {
 
     return (
         <Card>
-            <Text variant='headlineMedium'>Enter Your Goal</Text>
-            <Text variant='titleMedium'>Enter your maximum spending limit</Text>
+            <Text style={{marginBottom: 5,padding: 10}} variant='headlineMedium'>Enter Your Goal</Text>
+            <Text style={{padding:10}}variant='titleMedium'>Enter a spending limit!</Text>
             <TextInput value={goalTitle} label="title" onChangeText={(input)=>{setGoalTitle(input)}}></TextInput>
             <TextInput value={goalBal} label="amount" keyboardType='numeric' onChangeText={(input)=>{setGoalBal(input)}}></TextInput>
             <Button icon='check' mode="elevated" onPress={()=>{addG();props.closeModal()}}>Done</Button>
